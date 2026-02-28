@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Antigravity Birthday Scheduler</title>
+    <!-- Modern Google Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated particle background elements -->
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <span class="logo-text">Antigravity</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Schedule</a></li>
+                <li><a href="#wishes-section">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Landing / Hero Section -->
+        <section class="hero">
+            <h1>Birthday Scheduler</h1>
+            <p>Automate your thoughtful wishes. Schedule emails that deliver exactly when the clock strikes midnight.</p>
+        </section>
+
+        <!-- Notification System (Hidden by default) -->
+        <div id="notification-container" class="notification hidden">
+            <div class="notification-icon">✓</div>
+            <div class="notification-text" id="notification-message">Wish scheduled successfully!</div>
+        </div>
+
+        <!-- Glass Form Card -->
+        <section class="scheduler-section">
+            <div class="glass-card">
+                <h2>Schedule a Wish</h2>
+                <form id="scheduler-form">
+                    
+                    <div class="input-group">
+                        <label for="senderName">Your Name</label>
+                        <input type="text" id="senderName" name="senderName" placeholder="e.g. Bhuvan" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="receiverEmail">Receiver Email</label>
+                        <input type="email" id="receiverEmail" name="receiverEmail" placeholder="friend@example.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="sendAt">Date & Time</label>
+                        <input type="datetime-local" id="sendAt" name="sendAt" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="message">Custom Message</label>
+                        <textarea id="message" name="message" rows="4" placeholder="Happy Birthday! Hope you have an amazing day 🎉" required></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn" class="glow-button">
+                        <span class="btn-text">Schedule Email</span>
+                        <span class="btn-spinner hidden"></span>
+                    </button>
+                    
+                </form>
+            </div>
+        </section>
+
+        <!-- Dynamic Wishes Table -->
+        <section id="wishes-section" class="wishes-section">
+            <h2>Scheduled Wishes</h2>
+            
+            <div class="table-container glass-card">
+                <table class="glass-table">
+                    <thead>
+                        <tr>
+                            <th>Sender</th>
+                            <th>Receiver</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wishes-table-body">
+                        <!-- Content populated by API -->
+                        <tr>
+                            <td colspan="4" class="table-loading">Loading wishes...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- Minimal Footer -->
+    <footer class="glass-footer">
+        <p>&copy; 2026 Antigravity Systems. All rights reserved.</p>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
