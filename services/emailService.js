@@ -6,8 +6,8 @@ const nodemailer = require('nodemailer');
  */
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: 465,
-    secure: true,
+    port: 587,
+    secure: false, // true for 465, false for other ports (like 587)
     auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
     tls: {
         rejectUnauthorized: false
     },
-    // Force IPv4 lookup for Render's network
+    // Keep IPv4 forced lookout for Render
     localAddress: '0.0.0.0'
 });
 
