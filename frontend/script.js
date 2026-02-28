@@ -72,7 +72,13 @@ form.addEventListener('submit', async (e) => {
             fetchScheduledWishes();
         } else {
             // Server responded with an error message
-            const errMsg = data.message || 'Failed to schedule wish. Please try again.';
+            let errMsg = data.message || 'Failed to schedule wish. Please try again.';
+
+            // Extract specific validation error if present
+            if (data.error && Array.isArray(data.error) && data.error.length > 0) {
+                errMsg = data.error[0].msg;
+            }
+
             showNotification(errMsg, 'error');
         }
 

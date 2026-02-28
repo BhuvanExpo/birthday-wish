@@ -1,4 +1,9 @@
 require('dotenv').config();
+
+// Workaround for Render Free Tier IPv6 issue with Node 18+
+const dns = require('dns');
+dns.setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const cors = require('cors');
 const cron = require('node-cron');
