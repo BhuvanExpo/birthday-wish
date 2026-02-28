@@ -14,7 +14,9 @@ const transporter = nodemailer.createTransport({
     },
     tls: {
         rejectUnauthorized: false
-    }
+    },
+    // Force IPv4 lookup for Render's network
+    localAddress: '0.0.0.0'
 });
 
 /**
