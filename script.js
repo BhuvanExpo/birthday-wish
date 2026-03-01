@@ -10,6 +10,8 @@ const notificationContainer = document.getElementById('notification-container');
 const notificationMessage = document.getElementById('notification-message');
 const wishesTableBody = document.getElementById('wishes-table-body');
 const feedbackForm = document.getElementById('feedback-form');
+const mobileMenuToggle = document.getElementById('mobile-menu');
+const navLinks = document.querySelector('.nav-links');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,6 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Only fetch schedule if we are on the dashboard page
     if (wishesTableBody) {
         fetchScheduledWishes();
+    }
+
+    // Initialize Mobile Menu
+    if (mobileMenuToggle && navLinks) {
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
     }
 });
 
