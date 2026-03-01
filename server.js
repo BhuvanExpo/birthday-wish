@@ -87,10 +87,19 @@ cron.schedule('* * * * *', async () => {
 
             console.log(`Attempting to send wish to ${wish.receiverEmail} (Attempt ${wish.retryCount + 1})`);
 
-            // Attempt to send email
-            const isSuccess = await sendEmail(wish.receiverEmail, subject, text);
+            let allEmailsSent = true;
+            // Send exactly 5 emails per wish
+            for (let i = 1; i <= 5; i++) {
+                console.log(`Sending email ${i} of 5 to ${wish.receiverEmail}...`);
+                const isSuccess = await sendEmail(wish.receiverEmail, subject, text);
+                if (!isSuccess) {
+                    allEmailsSent = false;
+                    console.error(`Email ${i} failed. Stopping further attempts for this sequence.`);
+                    break; // Stop sending if one of the 5 fails, let retry logic handle it next minute
+                }
+            }
 
-            if (isSuccess) {
+            if (allEmailsSent) {
                 // Mark as sent in the database
                 wish.status = 'sent';
                 await wish.save();
