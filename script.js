@@ -9,6 +9,7 @@ const btnSpinner = submitBtn.querySelector('.btn-spinner');
 const notificationContainer = document.getElementById('notification-container');
 const notificationMessage = document.getElementById('notification-message');
 const wishesTableBody = document.getElementById('wishes-table-body');
+const feedbackForm = document.getElementById('feedback-form');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -76,6 +77,16 @@ if (form) {
                 form.reset();
                 // Refresh table to show newly scheduled wish
                 fetchScheduledWishes();
+
+                // Show the feedback container and scroll to it
+                const feedbackContainer = document.getElementById('feedback-container');
+                if (feedbackContainer) {
+                    feedbackContainer.style.display = 'block';
+                    feedbackContainer.classList.remove('hidden');
+                    setTimeout(() => {
+                        feedbackContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
             } else {
                 // Server responded with an error message
                 let errMsg = data.message || 'Failed to schedule wish. Please try again.';
@@ -227,4 +238,55 @@ function escapeHtml(unsafe) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+// Handle Feedback Form Submission
+if (feedbackForm) {
+    feedbackForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('feedbackName').value.trim();
+        const email = document.getElementById('feedbackEmail').value.trim();
+        const message = document.getElementById('feedbackMessage').value.trim();
+
+        if (!message) {
+            showNotification('Please enter a message', 'error');
+            return;
+        }
+
+        const submitBtn = document.getElementById('feedback-submit-btn');
+        const originalText = submitBtn.querySelector('.btn-text').textContent;
+        submitBtn.querySelector('.btn-text').textContent = 'Submitting...';
+        submitBtn.querySelector('.btn-spinner').classList.remove('hidden');
+        submitBtn.disabled = true;
+
+        try {
+            const response = await fetch(`${BASE_URL}/feedback`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, message })
+            });
+
+            if (response.ok) {
+                showNotification('Feedback received. Thank you!', 'success');
+                feedbackForm.reset();
+                // Optionally hide it again on the main page after successful submission
+                const feedbackContainer = document.getElementById('feedback-container');
+                if (feedbackContainer) {
+                    setTimeout(() => {
+                        feedbackContainer.style.display = 'none';
+                    }, 3000);
+                }
+            } else {
+                showNotification('Error submitting feedback', 'error');
+            }
+        } catch (error) {
+            console.error('Feedback Error:', error);
+            showNotification('Network error.', 'error');
+        } finally {
+            submitBtn.querySelector('.btn-text').textContent = originalText;
+            submitBtn.querySelector('.btn-spinner').classList.add('hidden');
+            submitBtn.disabled = false;
+        }
+    });
 }
