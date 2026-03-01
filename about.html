@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhuvan.live Birthday Scheduler</title>
+    <!-- Modern Google Font: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Animated particle background elements -->
+    <div class="particle p1"></div>
+    <div class="particle p2"></div>
+    <div class="particle p3"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="nav-content">
+            <div class="logo">
+                <img src="profile.jpg" alt="Bhuvan.live Logo"
+                    style="height: 30px; width: 30px; border-radius: 50%; object-fit: cover;">
+                <span class="logo-text">Bhuvan.live</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Schedule</a></li>
+                <li><a href="wishes.html">Dashboard</a></li>
+                <li><a href="about.html">About Me</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Landing / Hero Section -->
+        <section class="hero">
+            <h1>Birthday Scheduler</h1>
+            <p>Automate your thoughtful wishes. Schedule emails that deliver exactly when the clock strikes midnight.
+            </p>
+        </section>
+
+        <!-- Notification System (Hidden by default) -->
+        <div id="notification-container" class="notification hidden">
+            <div class="notification-icon">✓</div>
+            <div class="notification-text" id="notification-message">Wish scheduled successfully!</div>
+        </div>
+
+        <!-- About Me Section -->
+        <section class="about-section" style="max-width: 800px; margin: 0 auto 4rem auto; text-align: center;">
+            <div class="glass-card"
+                style="display: flex; flex-direction: column; align-items: center; padding: 3rem 2rem;">
+                <div class="profile-image-container"
+                    style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem; border: 3px solid var(--accent-primary); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);">
+                    <img src="profile.jpg" alt="Bhuvan Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <h2
+                    style="font-size: 2.2rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #fff, var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    Hi, I'm Bhuvan</h2>
+                <h3 style="color: var(--accent-primary); font-size: 1.2rem; margin-bottom: 1.5rem; font-weight: 500;">
+                    Creator of Bhuvan.live</h3>
+
+                <div
+                    style="color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; max-width: 600px; margin-bottom: 2.5rem;">
+                    <p style="margin-bottom: 1rem;">Welcome! I built this automated birthday scheduling platform to help
+                        people connect and spread joy without the stress of remembering exact dates every single year.
+                    </p>
+                    <p>I am passionate about creating clean, functional, and beautiful web applications that solve
+                        real-world problems. Whether it's crafting intuitive user interfaces or building robust backend
+                        systems, I strive to deliver excellent digital experiences.</p>
+                </div>
+
+                <!-- Connect & Socials Section -->
+                <section class="social-section" id="social-section">
+                    <div class="social-card">
+                        <p class="social-title">Connect with me</p>
+                        <div class="social-links-container">
+                            <a href="https://github.com/bhuvanexpo" target="_blank" class="social-icon"
+                                title="GitHub"><i class="fa-brands fa-github"></i></a>
+                            <a href="https://instagram.com/iambhuvangm" target="_blank" class="social-icon"
+                                title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://facebook.com/iambhuvangm" target="_blank" class="social-icon"
+                                title="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://x.com/iambhuvangm" target="_blank" class="social-icon" title="X"><i
+                                    class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://linkedin.com/in/bhuvanexpo" target="_blank" class="social-icon"
+                                title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                            <a href="mailto:bhuvangm@hotmail.com" class="social-icon" title="Email"><i
+                                    class="fa-solid fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </section>
+
+    </main>
+
+    <!-- Minimal Footer -->
+    <footer class="glass-footer">
+        <p>&copy; 2026 Bhuvan.live. All rights reserved.</p>
+    </footer>
+
+    <!-- App Logic -->
+    <script src="script.js"></script>
+</body>
+
+</html>

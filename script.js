@@ -12,84 +12,91 @@ const wishesTableBody = document.getElementById('wishes-table-body');
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    // Set min datetime to current time
-    const now = new Date();
-    // Format: YYYY-MM-DDThh:mm (required for datetime-local)
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    document.getElementById('sendAt').min = now.toISOString().slice(0, 16);
+    // Only set min datetime if we are on the page with the form
+    const sendAtInput = document.getElementById('sendAt');
+    if (sendAtInput) {
+        const now = new Date();
+        // Format: YYYY-MM-DDThh:mm (required for datetime-local)
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        sendAtInput.min = now.toISOString().slice(0, 16);
+    }
 
-    // Fetch initial data
-    fetchScheduledWishes();
+    // Only fetch schedule if we are on the dashboard page
+    if (wishesTableBody) {
+        fetchScheduledWishes();
+    }
 });
 
 // Handle Form Submission
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-    // 1. Get raw input values
-    const senderName = document.getElementById('senderName').value.trim();
-    const receiverEmail = document.getElementById('receiverEmail').value.trim();
-    const sendAtRaw = document.getElementById('sendAt').value;
-    const message = document.getElementById('message').value.trim();
+        // 1. Get raw input values
+        const senderName = document.getElementById('senderName').value.trim();
+        const receiverEmail = document.getElementById('receiverEmail').value.trim();
+        const sendAtRaw = document.getElementById('sendAt').value;
+        const message = document.getElementById('message').value.trim();
 
-    // 2. Validate input quickly
-    if (!senderName || !receiverEmail || !sendAtRaw || !message) {
-        showNotification('Please fill in all fields.', 'error');
-        return;
-    }
-
-    // Convert local datetime string to UTC ISO string required by backend
-    const sendAtUserLocal = new Date(sendAtRaw);
-    const sendAtISO = sendAtUserLocal.toISOString();
-
-    const payload = {
-        senderName,
-        receiverEmail,
-        sendAt: sendAtISO,
-        message
-    };
-
-    // 3. Set Loading State
-    setLoadingState(true);
-
-    try {
-        // 4. Send to live Render backend
-        const response = await fetch(`${BASE_URL}/schedule`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-
-        const data = await response.json();
-
-        // 5. Handle Response
-        if (response.ok && data.success) {
-            showNotification('Birthday wish scheduled successfully! 🎉', 'success');
-            form.reset();
-            // Refresh table to show newly scheduled wish
-            fetchScheduledWishes();
-        } else {
-            // Server responded with an error message
-            let errMsg = data.message || 'Failed to schedule wish. Please try again.';
-
-            // Extract specific validation error if present
-            if (data.error && Array.isArray(data.error) && data.error.length > 0) {
-                errMsg = data.error[0].msg;
-            }
-
-            showNotification(errMsg, 'error');
+        // 2. Validate input quickly
+        if (!senderName || !receiverEmail || !sendAtRaw || !message) {
+            showNotification('Please fill in all fields.', 'error');
+            return;
         }
 
-    } catch (error) {
-        console.error('Submission Error:', error);
-        showNotification('Network error. Is the server online?', 'error');
-    } finally {
-        // Always remove loading state
-        setLoadingState(false);
-    }
-});
+        // Convert local datetime string to UTC ISO string required by backend
+        const sendAtUserLocal = new Date(sendAtRaw);
+        const sendAtISO = sendAtUserLocal.toISOString();
+
+        const payload = {
+            senderName,
+            receiverEmail,
+            sendAt: sendAtISO,
+            message
+        };
+
+        // 3. Set Loading State
+        setLoadingState(true);
+
+        try {
+            // 4. Send to live Render backend
+            const response = await fetch(`${BASE_URL}/schedule`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            // 5. Handle Response
+            if (response.ok && data.success) {
+                showNotification('Birthday wish scheduled successfully! 🎉', 'success');
+                form.reset();
+                // Refresh table to show newly scheduled wish
+                fetchScheduledWishes();
+            } else {
+                // Server responded with an error message
+                let errMsg = data.message || 'Failed to schedule wish. Please try again.';
+
+                // Extract specific validation error if present
+                if (data.error && Array.isArray(data.error) && data.error.length > 0) {
+                    errMsg = data.error[0].msg;
+                }
+
+                showNotification(errMsg, 'error');
+            }
+
+        } catch (error) {
+            console.error('Submission Error:', error);
+            showNotification('Network error. Is the server online?', 'error');
+        } finally {
+            // Always remove loading state
+            setLoadingState(false);
+        }
+    });
+}
 
 // UI Helpers
 function setLoadingState(isLoading) {
@@ -165,6 +172,16 @@ async function fetchScheduledWishes() {
     }
 }
 
+function maskEmail(email) {
+    if (!email || !email.includes('@')) return email;
+    const [localPart, domain] = email.split('@');
+    if (localPart.length <= 3) {
+        return `${localPart[0]}***@${domain}`;
+    }
+    const maskedLocal = localPart.slice(0, 3) + '***';
+    return `${maskedLocal}@${domain}`;
+}
+
 function renderWishesTable(wishes) {
     if (wishes.length === 0) {
         wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">No scheduled wishes yet. Create one above!</td></tr>`;
@@ -190,7 +207,7 @@ function renderWishesTable(wishes) {
         return `
             <tr>
                 <td>${escapeHtml(wish.senderName)}</td>
-                <td>${escapeHtml(wish.receiverEmail)}</td>
+                <td>${escapeHtml(maskEmail(wish.receiverEmail))}</td>
                 <td>
                     <div style="font-weight: 500">${formattedDate}</div>
                     <div style="font-size: 0.8rem; color: var(--text-secondary)">${formattedTime}</div>

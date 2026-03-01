@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Antigravity Birthday Scheduler</title>
+    <title>Bhuvan.live Birthday Scheduler</title>
     <!-- Modern Google Font: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Social Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <!-- Animated particle background elements -->
     <div class="particle p1"></div>
@@ -20,12 +24,14 @@
     <nav class="glass-nav">
         <div class="nav-content">
             <div class="logo">
-                <span class="logo-icon">✨</span>
-                <span class="logo-text">Antigravity</span>
+                <img src="profile.jpg" alt="Bhuvan.live Logo"
+                    style="height: 30px; width: 30px; border-radius: 50%; object-fit: cover;">
+                <span class="logo-text">Bhuvan.live</span>
             </div>
             <ul class="nav-links">
-                <li><a href="#" class="active">Schedule</a></li>
-                <li><a href="#wishes-section">Dashboard</a></li>
+                <li><a href="index.html" class="active">Schedule</a></li>
+                <li><a href="wishes.html">Dashboard</a></li>
+                <li><a href="about.html">About Me</a></li>
             </ul>
         </div>
     </nav>
@@ -34,7 +40,8 @@
         <!-- Landing / Hero Section -->
         <section class="hero">
             <h1>Birthday Scheduler</h1>
-            <p>Automate your thoughtful wishes. Schedule emails that deliver exactly when the clock strikes midnight.</p>
+            <p>Automate your thoughtful wishes. Schedule emails that deliver exactly when the clock strikes midnight.
+            </p>
         </section>
 
         <!-- Notification System (Hidden by default) -->
@@ -48,7 +55,7 @@
             <div class="glass-card">
                 <h2>Schedule a Wish</h2>
                 <form id="scheduler-form">
-                    
+
                     <div class="input-group">
                         <label for="senderName">Your Name</label>
                         <input type="text" id="senderName" name="senderName" placeholder="e.g. Bhuvan" required>
@@ -56,7 +63,8 @@
 
                     <div class="input-group">
                         <label for="receiverEmail">Receiver Email</label>
-                        <input type="email" id="receiverEmail" name="receiverEmail" placeholder="friend@example.com" required>
+                        <input type="email" id="receiverEmail" name="receiverEmail" placeholder="friend@example.com"
+                            required>
                     </div>
 
                     <div class="input-group">
@@ -66,49 +74,53 @@
 
                     <div class="input-group">
                         <label for="message">Custom Message</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Happy Birthday! Hope you have an amazing day 🎉" required></textarea>
+                        <textarea id="message" name="message" rows="4"
+                            placeholder="Happy Birthday! Hope you have an amazing day 🎉" required></textarea>
                     </div>
 
                     <button type="submit" id="submit-btn" class="glow-button">
                         <span class="btn-text">Schedule Email</span>
                         <span class="btn-spinner hidden"></span>
                     </button>
-                    
+
                 </form>
             </div>
         </section>
 
-        <!-- Dynamic Wishes Table -->
-        <section id="wishes-section" class="wishes-section">
-            <h2>Scheduled Wishes</h2>
-            
-            <div class="table-container glass-card">
-                <table class="glass-table">
-                    <thead>
-                        <tr>
-                            <th>Sender</th>
-                            <th>Receiver</th>
-                            <th>Date & Time</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="wishes-table-body">
-                        <!-- Content populated by API -->
-                        <tr>
-                            <td colspan="4" class="table-loading">Loading wishes...</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Instructions Section -->
+        <section class="instructions-section"
+            style="max-width: 600px; margin: 0 auto; margin-bottom: 4rem; text-align: left; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2rem; box-shadow: var(--glass-shadow);">
+            <h2 style="font-size: 1.4rem; color: var(--accent-secondary); margin-bottom: 1rem;"><i
+                    class="fa-solid fa-circle-info" style="margin-right: 8px;"></i> How to Use</h2>
+            <ol style="color: var(--text-secondary); margin-left: 1.5rem; margin-bottom: 1.5rem; line-height: 1.8;">
+                <li>Enter your name and the recipient's email address.</li>
+                <li>Select the exact date and time you want the wish to be delivered.</li>
+                <li>Write a personalized message to make their day special.</li>
+                <li>Click "Schedule Email" and let Bhuvan.live handle the rest!</li>
+            </ol>
+
+            <div
+                style="background: rgba(255, 51, 102, 0.1); border-left: 4px solid #ff3366; padding: 1rem; border-radius: 8px;">
+                <h3 style="font-size: 1.1rem; color: #ff3366; margin-bottom: 0.5rem;"><i
+                        class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i> Professional Use Only
+                </h3>
+                <p style="font-size: 0.95rem; color: var(--text-secondary);">
+                    This tool is designed to spread joy and ensure you never miss a special moment. Please use this
+                    service responsibly and professionally.
+                    <strong>Any misuse, spamming, or malicious intent using this platform is strictly
+                        forbidden.</strong> Stay kind and respectful!
+                </p>
             </div>
         </section>
     </main>
 
     <!-- Minimal Footer -->
     <footer class="glass-footer">
-        <p>&copy; 2026 Antigravity Systems. All rights reserved.</p>
+        <p>&copy; 2026 Bhuvan.live. All rights reserved.</p>
     </footer>
 
     <!-- App Logic -->
     <script src="script.js"></script>
 </body>
+
 </html>
