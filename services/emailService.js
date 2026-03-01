@@ -1,39 +1,24 @@
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+
+// Initialize Resend with the provided API key
+const resend = new Resend('re_gvoKTmEs_6tDJ3g1MfUbM6MBZWDvFfb5V');
 
 /**
- * Creates and configures a nodemailer transport.
- * Reads SMTP credentials from environment variables.
- */
-const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true for 465, false for other ports (like 587)
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-    },
-    tls: {
-        rejectUnauthorized: false
-    },
-    // Keep IPv4 forced lookout for Render
-    localAddress: '0.0.0.0'
-});
-
-/**
- * Sends an email using the configured transporter.
+ * Sends an email using the Resend API.
  * @param {string} to - Recipient's email address
  * @param {string} subject - Email subject
  * @param {string} text - Plain text body
  */
 const sendEmail = async (to, subject, text) => {
     try {
-        const info = await transporter.sendMail({
-            from: '"Birthday Scheduler" <1432bhuva@gmail.com>',
+        const data = await resend.emails.send({
+            from: 'Birthday Scheduler <onboarding@resend.dev>', // Resend testing domain
             to,
             subject,
             text,
         });
-        console.log(`Message sent: ${info.messageId}`);
+
+        console.log(`Message sent successfully via Resend: ${data.id}`);
         return true;
     } catch (error) {
         console.error(`Error sending email to ${to}: ${error.message}`);
