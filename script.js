@@ -4,8 +4,8 @@ const BASE_URL = "https://birthday-wish-3zr4.onrender.com";
 // DOM Elements
 const form = document.getElementById('scheduler-form');
 const submitBtn = document.getElementById('submit-btn');
-const btnText = submitBtn.querySelector('.btn-text');
-const btnSpinner = submitBtn.querySelector('.btn-spinner');
+const btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+const btnSpinner = submitBtn ? submitBtn.querySelector('.btn-spinner') : null;
 const notificationContainer = document.getElementById('notification-container');
 const notificationMessage = document.getElementById('notification-message');
 const wishesTableBody = document.getElementById('wishes-table-body');
@@ -111,6 +111,8 @@ if (form) {
 
 // UI Helpers
 function setLoadingState(isLoading) {
+    if (!submitBtn) return;
+
     if (isLoading) {
         submitBtn.disabled = true;
         btnText.textContent = 'Scheduling...';
