@@ -12,7 +12,7 @@ const resend = new Resend('re_gvoKTmEs_6tDJ3g1MfUbM6MBZWDvFfb5V');
 const sendEmail = async (to, subject, text) => {
     try {
         const data = await resend.emails.send({
-            from: 'Birthday Scheduler <onboarding@resend.dev>', // Resend testing domain
+            from: 'Antigravity <hello@birthday.bhuvan.live>',
             to,
             subject,
             text,
