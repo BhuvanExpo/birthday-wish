@@ -38,7 +38,11 @@
 
     <main class="container">
         <!-- Landing / Hero Section -->
-        <section class="hero">
+        <section class="hero" style="display: flex; flex-direction: column; align-items: center;">
+            <div class="profile-image-container"
+                style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem; border: 3px solid var(--accent-primary); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);">
+                <img src="profile.jpg" alt="Bhuvan Profile" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
             <h1>Birthday Scheduler</h1>
             <p>Automate your thoughtful wishes. Schedule emails that deliver exactly when the clock strikes midnight.
             </p>
@@ -57,7 +61,7 @@
                 <form id="scheduler-form">
 
                     <div class="input-group">
-                        <label for="senderName">Your Name</label>
+                        <label for="senderName">Birthday Person Name</label>
                         <input type="text" id="senderName" name="senderName" placeholder="e.g. Bhuvan" required>
                     </div>
 
