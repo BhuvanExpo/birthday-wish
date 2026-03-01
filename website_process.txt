@@ -1,0 +1,52 @@
+Bhuvan.live Birthday Scheduler
+==============================
+This document outlines the entire process of how the Bhuvan.live Birthday Scheduler website works, both on the frontend (what users see) and backend (what happens behind the scenes).
+
+1. Core Concept
+---------------
+The website is an automated tool built to solve a simple problem: forgetting to send birthday wishes exactly at midnight. Users can schedule a personalized email to be delivered to a friend at a specific date and time, and the system handles the actual sending automatically.
+
+2. Frontend Pages (User Experience)
+-----------------------------------
+The platform is broken into three main visual pages:
+
+- Schedule Page (index.html):
+  This is the landing page. Users fill out a dynamic form providing their name, the receiver's email, the exact date/time they want the email sent, and a custom message. Upon successful scheduling, a "Leave Feedback" form instantly appears, inviting them to share their thoughts with the creator.
+
+- Dashboard Page (wishes.html):
+  This page displays a visual table of all currently scheduled wishes. For privacy, the receiver and sender emails are automatically partially masked (e.g. bhu***@gmail.com). The table pulls data live from the database and updates as wishes are sent or fail.
+
+- About Me Page (about.html):
+  A professional profile page to introduce the platform's creator, Bhuvan. It includes a biography, profile picture, social media contact links (GitHub, Instagram, Facebook, X, LinkedIn, Email), and a dedicated form explicitly for sending feedback directly to the database.
+
+3. Backend Process (The Engine)
+-------------------------------
+The application uses a database and server running continuously behind the scenes to make the magic happen:
+
+- The Database (MongoDB):
+  When a user schedules an email or leaves feedback, the data is instantly saved securely into a MongoDB Atlas database. It is split into two collections: one for "Wishes" (who to send to, when, what message) and one for "Feedbacks" (user suggestions).
+
+- The Server (Node.js/Express):
+  The server acts as the middleman. It receives the form data from the website and saves it to the database. 
+  
+- The Automation (Cron Jobs):
+  The true core of the app is a "cron job" that runs every single minute. Every minute, the server asks the database: "Are there any wishes scheduled for exactly right now (or earlier) that haven't been sent yet?".
+  
+  If the answer is yes, it initiates the Email Service.
+
+4. Email Delivery System
+------------------------
+- When a wish is due, the server uses a service (Nodemailer) to build the email payload (subject, html message, recipient).
+- It reaches out to the designated SMTP server (e.g., Gmail or Resend) and asks it to deliver the message.
+- The server attempts to send the email multiple times to ensure delivery. 
+- If successful, it updates the database status of that wish to "Sent". 
+- If it fails (due to a bad email address or network error), it will mark the wish as "Failed" but will retry up to 3 times before giving up.
+
+5. Technical Stack
+------------------
+- Frontend: HTML5, Vanilla CSS (Glassmorphism design style), Vanilla JavaScript.
+- Backend Language: Node.js
+- Backend Framework: Express.js
+- Database: MongoDB via Mongoose
+- Email Delivery: Nodemailer
+- Task Scheduling: node-cron
