@@ -1,5 +1,7 @@
 const { body, validationResult } = require('express-validator');
 const { sendError } = require('../utils/responseHandler');
+const Filter = require('bad-words');
+const filter = new Filter();
 
 const validateScheduleRequest = [
     body('senderName')
@@ -15,7 +17,13 @@ const validateScheduleRequest = [
     body('message')
         .trim()
         .notEmpty()
-        .withMessage('Message is required'),
+        .withMessage('Message is required')
+        .custom((value) => {
+            if (filter.isProfane(value)) {
+                throw new Error('Message contains inappropriate language');
+            }
+            return true;
+        }),
     body('sendAt')
         .notEmpty()
         .withMessage('Send at date is required')

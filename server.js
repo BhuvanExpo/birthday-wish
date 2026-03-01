@@ -27,6 +27,17 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev')); // Logging HTTP requests
 
+// Service Pause Middleware
+app.use((req, res, next) => {
+    if (process.env.PAUSE_SERVICE === 'true') {
+        return res.status(503).json({
+            success: false,
+            message: 'Service is temporarily paused for maintenance. Please try again later.'
+        });
+    }
+    next();
+});
+
 // Rate limiting middleware (Max 100 requests per IP per hour)
 const apiLimiter = rateLimit({
     windowMs: 60 * 60 * 1000, // 1 hour
