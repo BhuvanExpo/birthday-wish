@@ -558,8 +558,16 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
         font-size: 2rem;
     }
 
+    .nav-content {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
     .nav-links {
-        display: none;
-        /* Keep it simple on mobile */
+        width: 100%;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
     }
 }
