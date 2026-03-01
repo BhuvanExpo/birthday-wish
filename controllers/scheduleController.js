@@ -1,4 +1,5 @@
 const Wish = require('../models/Wish');
+const Feedback = require('../models/Feedback');
 const { sendSuccess, sendError, sendCreated } = require('../utils/responseHandler');
 
 /**
@@ -46,7 +47,34 @@ const getWishes = async (req, res) => {
     }
 };
 
+/**
+ * Controller to handle user feedback submissions
+ */
+const submitFeedback = async (req, res) => {
+    try {
+        const { name, email, message } = req.body;
+
+        if (!message) {
+            return sendError(res, 400, 'Bad Request', 'Feedback message is required.');
+        }
+
+        const feedback = new Feedback({
+            name: name || 'Anonymous',
+            email: email || '',
+            message
+        });
+
+        const savedFeedback = await feedback.save();
+
+        return sendCreated(res, 'Feedback submitted successfully.', savedFeedback);
+    } catch (error) {
+        console.error(`Error submitting feedback: ${error.message}`);
+        return sendError(res, 500, 'Server Error', 'Failed to submit feedback.');
+    }
+};
+
 module.exports = {
     scheduleWish,
     getWishes,
+    submitFeedback
 };

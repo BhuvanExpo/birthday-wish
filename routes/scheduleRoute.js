@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { scheduleWish, getWishes } = require('../controllers/scheduleController');
+const { scheduleWish, getWishes, submitFeedback } = require('../controllers/scheduleController');
 const { validateScheduleRequest } = require('../middlewares/validationMiddleware');
 
 /**
@@ -17,5 +17,12 @@ router.post('/schedule', validateScheduleRequest, scheduleWish);
  * @access  Public
  */
 router.get('/schedule', getWishes);
+
+/**
+ * @route   POST /api/feedback
+ * @desc    Submit user feedback
+ * @access  Public
+ */
+router.post('/feedback', submitFeedback);
 
 module.exports = router;
