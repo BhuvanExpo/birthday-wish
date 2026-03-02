@@ -11,6 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome for Social Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Identity Services -->
+    <script src="https://accounts.google.com/gsi/client" async></script>
     <!-- Favicon (Browser Tab Icon) -->
     <link rel="icon" type="image/jpeg" href="profile.jpg">
     <link rel="stylesheet" href="style.css">
@@ -68,7 +70,38 @@
         <section class="scheduler-section">
             <div class="glass-card">
                 <h2>Schedule a Wish</h2>
-                <form id="scheduler-form">
+
+                <!-- Google Sign-In Container -->
+                <div id="google-auth-container"
+                    style="text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.95rem;">Please sign in
+                        with Google to schedule a birthday wish. This helps prevent spam.</p>
+                    <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID_HERE" data-context="signin"
+                        data-ux_mode="popup" data-callback="handleGoogleCredentialResponse" data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="filled_black"
+                        data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="250">
+                    </div>
+                </div>
+
+                <!-- Display signed in user info -->
+                <div id="user-info-container" class="hidden"
+                    style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 2rem; padding: 1rem; background: rgba(0, 210, 255, 0.1); border-radius: 12px; border: 1px solid rgba(0, 210, 255, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <img id="user-profile-pic" src="" alt="Profile"
+                            style="width: 40px; height: 40px; border-radius: 50%;">
+                        <div>
+                            <div style="font-size: 0.9rem; font-weight: 500;">Signed in as</div>
+                            <div id="user-email-display" style="font-size: 0.85rem; color: var(--text-secondary);">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="sign-out-btn"
+                        style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 0.4rem 0.8rem; border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: background 0.3s;">Sign
+                        Out</button>
+                </div>
+
+                <form id="scheduler-form" class="hidden">
 
                     <div class="input-group">
                         <label for="senderName">Birthday Person Name</label>

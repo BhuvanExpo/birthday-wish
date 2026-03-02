@@ -13,6 +13,9 @@ const feedbackForm = document.getElementById('feedback-form');
 const mobileMenuToggle = document.getElementById('mobile-menu');
 const navLinks = document.querySelector('.nav-links');
 
+// Auth Variables
+let googleIdToken = null;
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     // Only set min datetime if we are on the page with the form
@@ -38,10 +41,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// Google Sign-In Callback
+function handleGoogleCredentialResponse(response) {
+    console.log("Encoded JWT ID token: " + response.credential);
+    googleIdToken = response.credential;
+
+    // Decode JWT to get user info (simple base64 decoding for frontend display)
+    const base64Url = googleIdToken.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    const decodedPayload = JSON.parse(jsonPayload);
+
+    // Update UI
+    document.getElementById('google-auth-container').classList.add('hidden');
+    document.getElementById('scheduler-form').classList.remove('hidden');
+    document.getElementById('user-info-container').classList.remove('hidden');
+
+    document.getElementById('user-profile-pic').src = decodedPayload.picture;
+    document.getElementById('user-email-display').textContent = decodedPayload.email;
+}
+
+// Handle Sign Out
+const signOutBtn = document.getElementById('sign-out-btn');
+if (signOutBtn) {
+    signOutBtn.addEventListener('click', () => {
+        googleIdToken = null;
+        document.getElementById('google-auth-container').classList.remove('hidden');
+        document.getElementById('scheduler-form').classList.add('hidden');
+        document.getElementById('user-info-container').classList.add('hidden');
+        document.getElementById('scheduler-form').reset();
+    });
+}
+
 // Handle Form Submission
 if (form) {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        if (!googleIdToken) {
+            showNotification('Please sign in with Google first.', 'error');
+            return;
+        }
 
         // 1. Get raw input values
         const senderName = document.getElementById('senderName').value.trim();
@@ -74,7 +117,8 @@ if (form) {
             const response = await fetch(`${BASE_URL}/schedule`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${googleIdToken}` // Include the Google JWT
                 },
                 body: JSON.stringify(payload)
             });

@@ -3,13 +3,14 @@ const router = express.Router();
 
 const { scheduleWish, getWishes, submitFeedback } = require('../controllers/scheduleController');
 const { validateScheduleRequest } = require('../middlewares/validationMiddleware');
+const { verifyGoogleToken } = require('../middlewares/authMiddleware');
 
 /**
  * @route   POST /api/schedule
  * @desc    Schedule a new birthday wish
- * @access  Public
+ * @access  Public (Requires Google Token)
  */
-router.post('/schedule', validateScheduleRequest, scheduleWish);
+router.post('/schedule', verifyGoogleToken, validateScheduleRequest, scheduleWish);
 
 /**
  * @route   GET /api/schedule

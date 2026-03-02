@@ -8,6 +8,11 @@ const wishSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
+        senderAuthEmail: {
+            type: String,
+            required: true,
+            trim: true,
+        },
         receiverEmail: {
             type: String,
             required: true,

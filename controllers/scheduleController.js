@@ -8,6 +8,7 @@ const { sendSuccess, sendError, sendCreated } = require('../utils/responseHandle
 const scheduleWish = async (req, res) => {
     try {
         const { senderName, receiverEmail, message, sendAt } = req.body;
+        const senderAuthEmail = req.user.email; // Extracted from verified Google token
 
         // Dates have already been validated by the middleware
         const parsedDate = new Date(sendAt);
@@ -15,6 +16,7 @@ const scheduleWish = async (req, res) => {
         // Create a new wish in the database
         const wish = new Wish({
             senderName,
+            senderAuthEmail,
             receiverEmail,
             message,
             sendAt: parsedDate,
