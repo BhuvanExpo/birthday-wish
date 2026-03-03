@@ -10,7 +10,7 @@ const wishSchema = new mongoose.Schema(
         },
         senderAuthEmail: {
             type: String,
-            required: true,
+            default: 'legacy@unverified.com',
             trim: true,
         },
         receiverEmail: {
