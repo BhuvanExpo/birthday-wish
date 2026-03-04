@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         sendAtInput.min = now.toISOString().slice(0, 16);
     }
 
-    // Only fetch schedule if we are on the dashboard page
+    // Only fetch schedule if we are on the dashboard page and logged in
+    // This is now handled in handleGoogleCredentialResponse, not here.
     if (wishesTableBody) {
-        fetchScheduledWishes();
+        wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
     }
 
     // Initialize Mobile Menu
@@ -62,6 +63,11 @@ function handleGoogleCredentialResponse(response) {
 
     document.getElementById('user-profile-pic').src = decodedPayload.picture;
     document.getElementById('user-email-display').textContent = decodedPayload.email;
+
+    // Fetch the user's specific scheduled wishes now that we are authenticated
+    if (wishesTableBody) {
+        fetchScheduledWishes();
+    }
 }
 
 // Handle Sign Out
@@ -73,6 +79,10 @@ if (signOutBtn) {
         document.getElementById('scheduler-form').classList.add('hidden');
         document.getElementById('user-info-container').classList.add('hidden');
         document.getElementById('scheduler-form').reset();
+
+        if (wishesTableBody) {
+            wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
+        }
     });
 }
 
@@ -216,10 +226,19 @@ function showNotification(message, type) {
 
 // Fetch Logic
 async function fetchScheduledWishes() {
+    if (!googleIdToken) {
+        wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
+        return;
+    }
+
     try {
-        // First check if the route exists on the backend.
-        // It's possible the user only implemented /insert and not /wishes yet.
-        const response = await fetch(`${BASE_URL}/schedule`);
+        // Fetch specific to the authenticated user
+        const response = await fetch(`${BASE_URL}/schedule`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${googleIdToken}` // Include the Google JWT
+            }
+        });
 
         if (!response.ok) {
             throw new Error(`Endpoint /schedule returned ${response.status}`);
