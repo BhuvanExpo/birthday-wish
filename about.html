@@ -56,9 +56,24 @@
         <section class="about-section" style="max-width: 800px; margin: 0 auto 4rem auto; text-align: center;">
             <div class="glass-card"
                 style="display: flex; flex-direction: column; align-items: center; padding: 3rem 2rem;">
-                <div class="profile-image-container"
-                    style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin-bottom: 1.5rem; border: 3px solid var(--accent-primary); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);">
-                    <img src="profile.jpg" alt="Bhuvan Profile" style="width: 100%; height: 100%; object-fit: cover;">
+                <!-- Logo Loop Container -->
+                <div class="logo-loop-container">
+                    <div class="orbit-track">
+                        <div class="orbit-item item-1"><i class="fa-brands fa-js" style="color: #f7df1e;"></i></div>
+                        <div class="orbit-item item-2"><i class="fa-brands fa-react" style="color: #61dafb;"></i></div>
+                        <div class="orbit-item item-3"><i class="fa-brands fa-node-js" style="color: #339933;"></i>
+                        </div>
+                        <div class="orbit-item item-4"><i class="fa-brands fa-html5" style="color: #e34f26;"></i></div>
+                        <div class="orbit-item item-5"><i class="fa-brands fa-css3-alt" style="color: #1572b6;"></i>
+                        </div>
+                        <div class="orbit-item item-6"><i class="fa-brands fa-python" style="color: #3776ab;"></i></div>
+                    </div>
+
+                    <div class="profile-image-container"
+                        style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 3px solid var(--accent-primary); box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);">
+                        <img src="profile.jpg" alt="Bhuvan Profile"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                 </div>
 
                 <h2
@@ -141,6 +156,7 @@
                         </div>
                         <button type="submit" id="feedback-submit-btn" class="glow-button" style="margin-top: 1rem;">
                             <span class="btn-text">Submit Feedback</span>
+                            <i class="fa-solid fa-arrow-right btn-arrow"></i>
                             <span class="btn-spinner hidden"></span>
                         </button>
                     </form>

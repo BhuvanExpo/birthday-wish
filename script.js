@@ -185,6 +185,15 @@ if (form) {
 
             // 5. Handle Response
             if (response.ok && data.success) {
+                // Fire magical confetti!
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 150,
+                        spread: 70,
+                        origin: { y: 0.6 } // Start slightly lower than center
+                    });
+                }
+
                 showNotification('Birthday wish scheduled successfully! 🎉', 'success');
                 form.reset();
                 // Refresh table to show newly scheduled wish
