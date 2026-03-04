@@ -36,8 +36,11 @@ const scheduleWish = async (req, res) => {
  */
 const getWishes = async (req, res) => {
     try {
+        const userEmail = req.user.email; // Extracted from verified Google token
+
         // Sort logic defaults to earliest scheduled dates first
-        const wishes = await Wish.find().sort({ sendAt: 1 });
+        // Only return wishes created by this specific user
+        const wishes = await Wish.find({ senderAuthEmail: userEmail }).sort({ sendAt: 1 });
 
         return sendSuccess(res, 'Wishes fetched successfully.', {
             count: wishes.length,

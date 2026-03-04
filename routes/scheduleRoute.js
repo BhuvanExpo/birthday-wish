@@ -14,10 +14,10 @@ router.post('/schedule', verifyGoogleToken, validateScheduleRequest, scheduleWis
 
 /**
  * @route   GET /api/schedule
- * @desc    Get all scheduled wishes
- * @access  Public
+ * @desc    Get all scheduled wishes for the logged-in user
+ * @access  Private (Requires Google Token)
  */
-router.get('/schedule', getWishes);
+router.get('/schedule', verifyGoogleToken, getWishes);
 
 /**
  * @route   POST /api/feedback
