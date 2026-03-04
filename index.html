@@ -21,6 +21,8 @@
 </head>
 
 <body>
+    <!-- WebGL Animated Grainient Background -->
+    <div id="grainient-bg"></div>
 
 
     <!-- Navigation -->
@@ -209,6 +211,24 @@
 
     <!-- App Logic -->
     <script src="script.js"></script>
+
+    <!-- WebGL Grainient Background -->
+    <script type="module">
+        import { initGrainient } from './grainient.js';
+
+        // Initialize the WebGL Grainient with custom options
+        // We ensure it only runs once the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initGrainient('grainient-bg', {
+                color1: '#8A2BE2', // Deep purple
+                color2: '#00D2FF', // Vibrant blue
+                color3: '#FF0080', // Soft pink
+                noiseScale: 2.0,
+                grainAmount: 0.15,
+                warpAmplitude: 40.0
+            });
+        });
+    </script>
 </body>
 
 </html>

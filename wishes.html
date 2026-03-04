@@ -19,6 +19,8 @@
 </head>
 
 <body>
+    <!-- WebGL Animated Grainient Background -->
+    <div id="grainient-bg"></div>
 
 
     <!-- Navigation -->
@@ -120,6 +122,22 @@
 
     <!-- App Logic -->
     <script src="script.js"></script>
+
+    <!-- WebGL Grainient Background -->
+    <script type="module">
+        import { initGrainient } from './grainient.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initGrainient('grainient-bg', {
+                color1: '#8A2BE2',
+                color2: '#00D2FF',
+                color3: '#FF0080',
+                noiseScale: 2.0,
+                grainAmount: 0.15,
+                warpAmplitude: 40.0
+            });
+        });
+    </script>
 </body>
 
 </html>
