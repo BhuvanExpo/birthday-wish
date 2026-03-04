@@ -11,17 +11,22 @@ const resend = new Resend('re_gvoKTmEs_6tDJ3g1MfUbM6MBZWDvFfb5V');
  */
 const sendEmail = async (to, subject, text) => {
     try {
-        const data = await resend.emails.send({
-            from: 'HAPPY BIRTHDAY <hello@birthday.bhuvan.live>',
+        const { data, error } = await resend.emails.send({
+            from: 'HAPPY BIRTHDAY <hello@happybirthday.bhuvan.live>',
             to,
             subject,
             text,
         });
 
-        console.log(`Message sent successfully via Resend: ${data.id}`);
+        if (error) {
+            console.error(`Error sending email to ${to}: ${error.message} (Code: ${error.name})`);
+            return false;
+        }
+
+        console.log(`Message sent successfully via Resend: ${data?.id}`);
         return true;
-    } catch (error) {
-        console.error(`Error sending email to ${to}: ${error.message}`);
+    } catch (err) {
+        console.error(`Unexpected error sending email to ${to}: ${err.message}`);
         return false;
     }
 };

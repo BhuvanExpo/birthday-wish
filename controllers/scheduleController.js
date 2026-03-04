@@ -50,6 +50,19 @@ const getWishes = async (req, res) => {
 };
 
 /**
+ * Controller to clear internal database of all wishes
+ */
+const clearAllWishes = async (req, res) => {
+    try {
+        await Wish.deleteMany({});
+        return sendSuccess(res, 'All wishes cleared successfully.');
+    } catch (error) {
+        console.error(`Error clearing wishes: ${error.message}`);
+        return sendError(res, 500, 'Server Error', error.message);
+    }
+};
+
+/**
  * Controller to handle user feedback submissions
  */
 const submitFeedback = async (req, res) => {
@@ -78,5 +91,6 @@ const submitFeedback = async (req, res) => {
 module.exports = {
     scheduleWish,
     getWishes,
-    submitFeedback
+    submitFeedback,
+    clearAllWishes
 };
