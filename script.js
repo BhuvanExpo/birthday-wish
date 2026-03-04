@@ -27,10 +27,24 @@ document.addEventListener('DOMContentLoaded', () => {
         sendAtInput.min = now.toISOString().slice(0, 16);
     }
 
-    // Only fetch schedule if we are on the dashboard page and logged in
-    // This is now handled in handleGoogleCredentialResponse, not here.
-    if (wishesTableBody) {
-        wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
+    // Auto-login if token exists in localStorage
+    const savedToken = localStorage.getItem('birthdayToken');
+    const savedUserStr = localStorage.getItem('birthdayUser');
+
+    if (savedToken && savedUserStr) {
+        googleIdToken = savedToken;
+        const decodedPayload = JSON.parse(savedUserStr);
+        updateUIForLoggedInUser(decodedPayload);
+
+        // Fetch schedule if we are on the dashboard page
+        if (wishesTableBody) {
+            fetchScheduledWishes();
+        }
+    } else {
+        // Not logged in. Only show auth message if on dashboard
+        if (wishesTableBody) {
+            wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
+        }
     }
 
     // Initialize Mobile Menu
@@ -56,17 +70,38 @@ function handleGoogleCredentialResponse(response) {
 
     const decodedPayload = JSON.parse(jsonPayload);
 
-    // Update UI
-    document.getElementById('google-auth-container').classList.add('hidden');
-    document.getElementById('scheduler-form').classList.remove('hidden');
-    document.getElementById('user-info-container').classList.remove('hidden');
+    // Save token to localStorage to persist across pages
+    localStorage.setItem('birthdayToken', googleIdToken);
+    localStorage.setItem('birthdayUser', JSON.stringify(decodedPayload));
 
-    document.getElementById('user-profile-pic').src = decodedPayload.picture;
-    document.getElementById('user-email-display').textContent = decodedPayload.email;
+    // Update UI
+    updateUIForLoggedInUser(decodedPayload);
 
     // Fetch the user's specific scheduled wishes now that we are authenticated
     if (wishesTableBody) {
         fetchScheduledWishes();
+    }
+}
+
+function updateUIForLoggedInUser(decodedPayload) {
+    if (document.getElementById('google-auth-container')) {
+        document.getElementById('google-auth-container').classList.add('hidden');
+    }
+
+    if (document.getElementById('scheduler-form')) {
+        document.getElementById('scheduler-form').classList.remove('hidden');
+    }
+
+    if (document.getElementById('user-info-container')) {
+        document.getElementById('user-info-container').classList.remove('hidden');
+    }
+
+    if (document.getElementById('user-profile-pic')) {
+        document.getElementById('user-profile-pic').src = decodedPayload.picture;
+    }
+
+    if (document.getElementById('user-email-display')) {
+        document.getElementById('user-email-display').textContent = decodedPayload.email;
     }
 }
 
@@ -75,10 +110,23 @@ const signOutBtn = document.getElementById('sign-out-btn');
 if (signOutBtn) {
     signOutBtn.addEventListener('click', () => {
         googleIdToken = null;
-        document.getElementById('google-auth-container').classList.remove('hidden');
-        document.getElementById('scheduler-form').classList.add('hidden');
-        document.getElementById('user-info-container').classList.add('hidden');
-        document.getElementById('scheduler-form').reset();
+
+        // Remove from localStorage
+        localStorage.removeItem('birthdayToken');
+        localStorage.removeItem('birthdayUser');
+
+        if (document.getElementById('google-auth-container')) {
+            document.getElementById('google-auth-container').classList.remove('hidden');
+        }
+
+        if (document.getElementById('scheduler-form')) {
+            document.getElementById('scheduler-form').classList.add('hidden');
+            document.getElementById('scheduler-form').reset();
+        }
+
+        if (document.getElementById('user-info-container')) {
+            document.getElementById('user-info-container').classList.add('hidden');
+        }
 
         if (wishesTableBody) {
             wishesTableBody.innerHTML = `<tr><td colspan="4" class="table-loading">Please sign in to view your scheduled wishes.</td></tr>`;
